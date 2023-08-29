@@ -1,15 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFiles,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
-@Controller('user')
+@Controller('api')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Post('register')
+  @UseInterceptors(FilesInterceptor('photos', 4))
+  async register(
+    @UploadedFiles() photos,
+    @Body()
+    createUserDto: CreateUserDto,
+  ) {
+    return await this.userService.register(createUserDto, photos);
   }
 
   @Get()

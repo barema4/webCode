@@ -1,25 +1,23 @@
-import { IsUrl } from 'class-validator';
+import { IsString, IsUrl } from 'class-validator';
 import { User } from '../../user/entities/user.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
-import { Photo } from 'src/photo/entities/photo.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+// import { Photo } from 'src/photo/entities/photo.entity';
 
 @Entity()
 export class Client {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   @IsUrl(undefined, { message: 'Avatar must be a valid URL' })
   avatar: string;
 
-  @OneToMany(() => Photo, (photo) => photo.client) // Define the one-to-many relationship
-  photos: Photo[];
+  @Column({ default: '' })
+  @IsString()
+  fullName: string;
+
+  @Column({ type: 'varchar', array: true, default: null })
+  photos: number[];
 
   @ManyToOne(() => User, (user) => user.clients)
   user: User;
