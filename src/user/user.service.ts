@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import {
   BadRequestException,
   ConflictException,
@@ -14,6 +15,7 @@ import * as AWS from 'aws-sdk';
 import * as bcrypt from 'bcrypt';
 import { Photo } from 'src/photo/entities/photo.entity';
 import { isEmail } from 'class-validator';
+require('dotenv').config();
 
 @Injectable()
 export class UserService {
@@ -80,12 +82,12 @@ export class UserService {
         images.map(async (image) => {
           const imageName = `image_${uuidv4()}.jpg`;
           const s3 = new AWS.S3({
-            accessKeyId: 'AKIA4TBHNXI5M4YPH7AZ',
-            secretAccessKey: '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',
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
           });
 
           const uploadParams = {
-            Bucket: 'cw-recruitment-tests',
+            Bucket: process.env.AWS_S3_BUCKET,
             Key: imageName,
             Body: image.buffer,
             ACL: 'public-read',
