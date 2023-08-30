@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import {
   BadRequestException,
   ConflictException,
@@ -7,7 +6,7 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Client } from 'src/client/entities/client.entity';
 import { v4 as uuidv4 } from 'uuid';
@@ -27,36 +26,64 @@ export class UserService {
     @InjectRepository(Photo)
     private readonly photoRepository: Repository<Photo>,
   ) {}
+
   async register(createUserDto: CreateUserDto, images: Express.Multer.File[]) {
     try {
-      const options: FindOneOptions<User> = {
+      const existingUser = await this.userRepository.findOne({
         where: { email: createUserDto.email },
-      };
-      const existingUser = await this.userRepository.findOne(options);
+      });
       if (existingUser) {
         throw new ConflictException('User with this email already exists.');
       }
+
+      const requiredFields = [
+        'firstName',
+        'lastName',
+        'email',
+        'password',
+        'role',
+      ];
+      if (requiredFields.some((field) => !createUserDto[field])) {
+        throw new BadRequestException('Please provide all required fields.');
+      }
+
       if (
-        createUserDto.firstName === '' ||
-        createUserDto.lastName === '' ||
-        createUserDto.email === '' ||
-        createUserDto.password === '' ||
-        createUserDto.role === ''
+        createUserDto.firstName.length < 2 ||
+        createUserDto.firstName.length > 25
       ) {
         throw new BadRequestException(
-          'Please provide firstName, lastName, email, password, and role.',
+          'firstName length must be between 2 and 25 characters',
         );
       }
+
+      if (
+        createUserDto.lastName.length < 2 ||
+        createUserDto.lastName.length > 25
+      ) {
+        throw new BadRequestException(
+          'lastName length must be between 2 and 25 characters',
+        );
+      }
+
       if (!isEmail(createUserDto.email)) {
         throw new BadRequestException('Please enter a valid email');
       }
+
+      if (
+        createUserDto.password.length < 6 ||
+        createUserDto.password.length > 50
+      ) {
+        throw new BadRequestException(
+          'Password length must be between 6 and 50 characters.',
+        );
+      }
+
       if (!/\d/.test(createUserDto.password)) {
         throw new BadRequestException(
           'Password must contain at least one number',
         );
       }
 
-      // Check for valid firstName and lastName format (no numbers)
       const nameRegex = /^[a-zA-Z\s]*$/;
       if (
         !nameRegex.test(createUserDto.firstName) ||
@@ -71,13 +98,13 @@ export class UserService {
 
       const user = this.userRepository.create(createUserDto);
       user.password = await bcrypt.hash(createUserDto.password, 10);
+
       const client = new Client();
       client.user = user;
       client.fullName = `${createUserDto.firstName} ${createUserDto.lastName}`;
       client.avatar =
         'https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg';
 
-      // Upload images to AWS S3 and get their URLs
       const uploadedImageURLs = await Promise.all(
         images.map(async (image) => {
           const imageName = `image_${uuidv4()}.jpg`;
@@ -98,16 +125,11 @@ export class UserService {
         }),
       );
       await this.userRepository.save(user);
-      // Save the Photo entities
+
       const photo = new Photo();
       photo.name = uuidv4();
       photo.user = user;
-      // const uploadedImages = [
-      //   'https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg',
-      //   'https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg',
-      //   'https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg',
-      //   'https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg',
-      // ];
+
       const mapedImagedPromises: Promise<number>[] = uploadedImageURLs.map(
         async (uploadedImageURL) => {
           photo.url = uploadedImageURL;
@@ -126,6 +148,7 @@ export class UserService {
       throw new BadRequestException(error.message);
     }
   }
+
   findAll() {
     return `This action returns all user`;
   }
