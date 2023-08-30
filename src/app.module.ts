@@ -8,6 +8,7 @@ import { ClientModule } from './client/client.module';
 import { User } from './user/entities/user.entity';
 import { Photo } from './photo/entities/photo.entity';
 import { Client } from './client/entities/client.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { Client } from './client/entities/client.entity';
     UserModule,
     PhotoModule,
     ClientModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
