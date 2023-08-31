@@ -8,6 +8,11 @@ import { Client } from 'src/client/entities/client.entity';
 import { Photo } from 'src/photo/entities/photo.entity';
 import { ClientRepository } from 'src/client/client.repository';
 import { PhotoRepository } from 'src/photo/photo.repository';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 @Module({
   imports: [
@@ -19,6 +24,11 @@ import { PhotoRepository } from 'src/photo/photo.repository';
       Client,
       Photo,
     ]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: process.env.AUTH_KEY,
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [UserController],
   providers: [UserService],
