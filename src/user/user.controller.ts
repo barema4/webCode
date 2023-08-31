@@ -25,8 +25,8 @@ export class UserController {
     return await this.userService.register(createUserDto, photos);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get('user/:id')
+  async getUser(@Param('id') id: number) {
+    return await this.userService.getUserById(id);
   }
 }
