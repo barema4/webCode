@@ -4,9 +4,11 @@ import {
   Post,
   Body,
   Param,
+  UseGuards,
   UseInterceptors,
   UploadedFiles,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -25,8 +27,9 @@ export class UserController {
     return await this.userService.register(createUserDto, photos);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get('user/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async getUser(@Param('id') id: number) {
+    return await this.userService.getUserById(id);
   }
 }

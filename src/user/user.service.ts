@@ -2,16 +2,17 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { Client } from 'src/client/entities/client.entity';
+import { Client } from '../client/entities/client.entity';
 import { v4 as uuidv4 } from 'uuid';
 import * as AWS from 'aws-sdk';
 import * as bcrypt from 'bcrypt';
-import { Photo } from 'src/photo/entities/photo.entity';
+import { Photo } from '../photo/entities/photo.entity';
 import { isEmail } from 'class-validator';
 import dotenv from 'dotenv';
 
@@ -125,7 +126,7 @@ export class UserService {
           return result.Location;
         }),
       );
-      await this.userRepository.save(user);
+      const savedUser = await this.userRepository.save(user);
 
       const photo = new Photo();
       photo.name = uuidv4();
@@ -144,7 +145,15 @@ export class UserService {
 
       await this.clientRepository.save(client);
 
-      return user;
+      return {
+        firstName: savedUser.firstName,
+        lastName: savedUser.lastName,
+        email: savedUser.email,
+        role: savedUser.role,
+        active: savedUser.active,
+        createdAt: savedUser.createdAt,
+        updatedAt: savedUser.updatedAt,
+      };
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -156,7 +165,25 @@ export class UserService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async getUserById(id: number): Promise<User> {
+    const options: FindOneOptions<User> = {
+      where: { id },
+      select: [
+        'id',
+        'firstName',
+        'lastName',
+        'email',
+        'role',
+        'active',
+        'createdAt',
+      ],
+    };
+    const user = await this.userRepository.findOne(options);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 }
