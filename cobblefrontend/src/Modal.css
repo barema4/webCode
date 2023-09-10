@@ -1,0 +1,72 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  width: 40vw;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1020;
+  padding: 0.625rem 0.3125rem 0.625rem 1.25rem;
+  min-height: 4.0625rem;
+  background-color: #eed0c8;
+  color: #584977;
+}
+
+.login-form {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  color: #584977;
+  grid-gap: 40px;
+}
+
+.nav-headers {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.Fields{
+  padding: 10px;
+  color: #584977;
+}
+
+.registration-form{
+  display: grid;
+  grid-gap: 30px;
+  color: #584977;
+}
