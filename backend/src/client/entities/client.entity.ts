@@ -1,7 +1,6 @@
 import { IsString, IsUrl } from 'class-validator';
 import { User } from '../../user/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-// import { Photo } from 'src/photo/entities/photo.entity';
 
 @Entity()
 export class Client {
