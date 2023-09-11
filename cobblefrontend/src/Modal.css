@@ -70,3 +70,21 @@
   grid-gap: 30px;
   color: #584977;
 }
+
+.middle-part{
+  height: 42rem;
+  background-color: #584977;
+}
+
+.footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 7rem;
+    background-color: #eed0c8;
+    color: #584977;
+}
+
+.footer-content{
+  padding-right: 5px;
+}
