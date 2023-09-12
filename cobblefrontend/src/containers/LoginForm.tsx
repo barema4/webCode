@@ -1,5 +1,7 @@
 import React from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { ErrorMessage } from "@hookform/error-message";
 import "../Modal.css";
 
 interface LoginFormProps {
@@ -11,42 +13,98 @@ interface FormData {
   password: string;
 }
 
+interface responseState {
+  token: {};
+  loading: boolean;
+  login: {
+    error: string | null;
+  };
+}
+
 const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
-  const { control, handleSubmit } = useForm<FormData>();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormData>({
+    criteriaMode: "all",
+  });
+
+  const dispatch = useDispatch();
+
+  const { error: loginError } = useSelector(
+    (state: responseState) => state.login
+  );
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+    dispatch({ type: "LOGIN_REQUEST", payload: data });
 
     onClose();
   };
 
   return (
     <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-      <Controller
+      <input
+        {...register("email", {
+          required: "Email is required",
+          pattern: {
+            value: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+            message: "Please enter a valid email",
+          },
+        })}
+        type="email"
+        placeholder="Email"
+        className="Fields"
+      />
+      <ErrorMessage
+        errors={errors}
         name="email"
-        control={control}
-        render={({ field }) => (
-          <input
-            {...field}
-            type="email"
-            placeholder="Email"
-            className="Fields"
-          />
-        )}
+        render={({ messages }) =>
+          messages &&
+          Object.entries(messages).map(([type, message]) => (
+            <p key={type} className="error">
+              {message}
+            </p>
+          ))
+        }
       />
-      <Controller
+      <input
+        {...register("password", {
+          required: "Password is required.",
+          minLength: {
+            value: 6,
+            message: "Password length must not be less than 6 characters.",
+          },
+          maxLength: {
+            value: 50,
+            message: "Password length must not be greater than 50 characters.",
+          },
+          pattern: {
+            value: /^(?=.*[0-9])/,
+            message: "Password must contain atleast anumber",
+          },
+        })}
+        type="password"
+        placeholder="Password"
+        className="Fields"
+      />
+      <ErrorMessage
+        errors={errors}
         name="password"
-        control={control}
-        render={({ field }) => (
-          <input
-            {...field}
-            type="password"
-            placeholder="Password"
-            className="Fields"
-          />
-        )}
+        render={({ messages }) =>
+          messages &&
+          Object.entries(messages).map(([type, message]) => (
+            <p key={type} className="error">
+              {message}
+            </p>
+          ))
+        }
       />
-      <button type="submit">Login</button>
+      <button type="submit" className="Fields">
+        Login
+      </button>
+
+      {loginError && <p className="error">{loginError}</p>}
     </form>
   );
 };

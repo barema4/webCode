@@ -9,6 +9,11 @@ interface FormValues {
   role: string;
 }
 
+interface LoginValues {
+  email: string;
+  password: string;
+}
+
 const API_BASE_URL = "http://localhost:3000/";
 
 const api = axios.create({
@@ -21,6 +26,10 @@ export const register = (formData: FormValues) => {
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+export const login = (loginData: LoginValues) => {
+  return api.post("/api/login", loginData);
 };
 
 export default api;

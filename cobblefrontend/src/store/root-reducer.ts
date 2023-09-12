@@ -1,7 +1,9 @@
 import registrationReducer from "./registrationSlice";
+import loginReducer from "./loginSlice"
 
 const rootReducers = {
- register: registrationReducer
+ register: registrationReducer,
+ login: loginReducer
 };
 
 export default rootReducers
