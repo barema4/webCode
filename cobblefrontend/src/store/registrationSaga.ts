@@ -6,7 +6,7 @@ interface FormValues {
   firstName: string;
   lastName: string;
   email: string;
-  photos: FileList | null;
+  photos: FileList;
   password: string;
   role: string;
 }

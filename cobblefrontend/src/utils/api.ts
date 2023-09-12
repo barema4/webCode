@@ -4,7 +4,7 @@ interface FormValues {
   firstName: string;
   lastName: string;
   email: string;
-  photos: any;
+  photos: FileList;
   password: string;
   role: string;
 }
@@ -18,7 +18,7 @@ const api = axios.create({
 export const register = (formData: FormValues) => {
   return api.post("/api/register", formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     },
   });
 };

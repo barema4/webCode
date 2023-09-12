@@ -23,8 +23,12 @@ const Modal: React.FC<ModalProps> = ({ onClose }) => {
           X
         </button>
         <nav className="nav-headers">
-          <Link to="/register" style={{ textDecoration: 'none' }}>Register</Link>
-          <Link to="/login" style={{ textDecoration: 'none' }}>Login</Link>
+          <Link to="/register" style={{ textDecoration: "none" }}>
+            Register
+          </Link>
+          <Link to="/login" style={{ textDecoration: "none" }}>
+            Login
+          </Link>
         </nav>
         <Routes>
           <Route path="/register" element={<RegistrationPage />} />

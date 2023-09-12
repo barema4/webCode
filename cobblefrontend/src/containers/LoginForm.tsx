@@ -26,14 +26,24 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         name="email"
         control={control}
         render={({ field }) => (
-          <input {...field} type="email" placeholder="Email" className="Fields" />
+          <input
+            {...field}
+            type="email"
+            placeholder="Email"
+            className="Fields"
+          />
         )}
       />
       <Controller
         name="password"
         control={control}
         render={({ field }) => (
-          <input {...field} type="password" placeholder="Password"  className="Fields"/>
+          <input
+            {...field}
+            type="password"
+            placeholder="Password"
+            className="Fields"
+          />
         )}
       />
       <button type="submit">Login</button>
