@@ -1,5 +1,10 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { setFormValues, setLoading, setError,clearError } from "./registrationSlice";
+import {
+  setFormValues,
+  setLoading,
+  setError,
+  clearError,
+} from "./registrationSlice";
 import { register } from "../utils/api";
 
 interface FormValues {
@@ -16,7 +21,7 @@ function* handleRegistration(action: {
   payload: FormValues;
 }): unknown {
   try {
-    yield put(clearError())
+    yield put(clearError());
     yield put(setLoading(true));
     const response = yield call(register, action.payload);
     yield put(setFormValues(response.data));

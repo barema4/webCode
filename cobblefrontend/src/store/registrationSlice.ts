@@ -41,12 +41,12 @@ const registrationSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    clearError(state){
-        state.error = null;
-    }
+    clearError(state) {
+      state.error = null;
+    },
   },
 });
 
-export const { setFormValues, setLoading, setError,clearError } =
+export const { setFormValues, setLoading, setError, clearError } =
   registrationSlice.actions;
 export default registrationSlice.reducer;

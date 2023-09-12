@@ -2,11 +2,8 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage } from "@hookform/error-message";
+import { useNavigate } from "react-router-dom";
 import "../Modal.css";
-
-interface LoginFormProps {
-  onClose: () => void;
-}
 
 interface FormData {
   email: string;
@@ -14,14 +11,15 @@ interface FormData {
 }
 
 interface responseState {
-  token: {};
+  status: {};
   loading: boolean;
   login: {
     error: string | null;
+    status: number;
   };
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
+const LoginForm: React.FC = () => {
   const {
     handleSubmit,
     register,
@@ -32,14 +30,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
 
   const dispatch = useDispatch();
 
-  const { error: loginError } = useSelector(
-    (state: responseState) => state.login
-  );
+  const navigate = useNavigate();
+
+  const { error, status } = useSelector((state: responseState) => state.login);
+
+  if (status === 201) {
+    navigate("/user-profile");
+  }
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     dispatch({ type: "LOGIN_REQUEST", payload: data });
-
-    onClose();
   };
 
   return (
@@ -100,11 +100,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
           ))
         }
       />
-      <button type="submit" className="Fields" disabled={!isDirty || !isValid}>
+      <button type="submit" className="Fields">
         Login
       </button>
 
-      {loginError && <p className="error">{loginError}</p>}
+      {error && <p className="error">{error}</p>}
     </form>
   );
 };

@@ -3,19 +3,19 @@ import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import "../Modal.css";
 
-const Navbar: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface NavigationProps {
+  onClose: () => void;
+  isModalOpen: boolean;
+  closeModal: () => void;
+}
+const Navbar: React.FC<NavigationProps> = ({
+  onClose,
+  isModalOpen,
+  closeModal,
+}) => {
   const [activeRoute, setActiveRoute] = useState("register");
 
   const navigate = useNavigate();
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   const handleTabClick = (route: string) => {
     setActiveRoute(route);
@@ -29,14 +29,14 @@ const Navbar: React.FC = () => {
       <div
         className="button"
         onClick={() => {
-          openModal();
+          onClose();
           handleTabClick("register");
         }}
       >
         Sign Up
       </div>
 
-      {isModalOpen && <Modal onClose={closeModal} />}
+      {isModalOpen && <Modal onClose={onClose} onCloseModal={closeModal} />}
     </div>
   );
 };

@@ -6,13 +6,13 @@ interface FormValues {
 }
 
 interface LoginState {
-  token: {};
+  status: {};
   loading: boolean;
   error: string | null;
 }
 
 const initialState: LoginState = {
-  token: "",
+  status: "",
   loading: false,
   error: null,
 };
@@ -21,8 +21,8 @@ const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    setLoginToken(state, action: PayloadAction<FormValues>) {
-      state.token = action.payload;
+    setLoginStatus(state, action: PayloadAction<FormValues>) {
+      state.status = action.payload;
     },
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload;
@@ -36,6 +36,6 @@ const loginSlice = createSlice({
   },
 });
 
-export const { setLoginToken, setLoading, setError, clearError } =
+export const { setLoginStatus, setLoading, setError, clearError } =
   loginSlice.actions;
 export default loginSlice.reducer;

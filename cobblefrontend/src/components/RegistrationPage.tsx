@@ -5,7 +5,7 @@ const RegisterPage: React.FC = () => {
   return (
     <div>
       <h2>Register</h2>
-      <RegistrationForm onClose={() => {}} />
+      <RegistrationForm />
     </div>
   );
 };

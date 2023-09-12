@@ -177,6 +177,7 @@ export class UserService {
         'active',
         'createdAt',
       ],
+      relations: ['photos'],
     };
     const user = await this.userRepository.findOne(options);
 

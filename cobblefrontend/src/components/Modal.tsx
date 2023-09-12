@@ -6,13 +6,14 @@ import RegistrationPage from "./RegistrationPage";
 
 interface ModalProps {
   onClose: () => void;
+  onCloseModal: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose }) => {
+const Modal: React.FC<ModalProps> = ({ onCloseModal }) => {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    onClose();
+    onCloseModal();
     navigate("/");
   };
 
