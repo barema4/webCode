@@ -1,12 +1,12 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { setFormValues, setLoading, setError } from "./registrationSlice";
+import { setFormValues, setLoading, setError,clearError } from "./registrationSlice";
 import { register } from "../utils/api";
 
 interface FormValues {
   firstName: string;
   lastName: string;
   email: string;
-  photos: any;
+  photos: FileList | null;
   password: string;
   role: string;
 }
@@ -16,12 +16,12 @@ function* handleRegistration(action: {
   payload: FormValues;
 }): unknown {
   try {
+    yield put(clearError())
     yield put(setLoading(true));
     const response = yield call(register, action.payload);
-
-    yield put(setFormValues(response));
+    yield put(setFormValues(response.data));
   } catch (error: any) {
-    yield put(setError(error.message || "An error occurred"));
+    yield put(setError(error.response.data.message || "An error occurred"));
   } finally {
     yield put(setLoading(false));
   }

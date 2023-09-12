@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface FormValues {
-    firstName: string;
-    lastName: string;
-    email: string;
-    photos: any;
-    password: string;
-    role: string;
-  }
+  firstName: string;
+  lastName: string;
+  email: string;
+  photos: FileList | null;
+  password: string;
+  role: string;
+}
 
 interface RegistrationState {
   formValues: FormValues;
@@ -17,34 +17,36 @@ interface RegistrationState {
 
 const initialState: RegistrationState = {
   formValues: {
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    email: "",
     photos: null,
-    password: '',
-    role: '',
+    password: "",
+    role: "",
   },
   loading: false,
   error: null,
 };
 
 const registrationSlice = createSlice({
-  name: 'registration',
+  name: "registration",
   initialState,
   reducers: {
-    setFormValues(state, action: PayloadAction<FormValues>) { 
-        console.log("action >", action)
+    setFormValues(state, action: PayloadAction<FormValues>) {
       state.formValues = action.payload;
     },
     setError(state, action: PayloadAction<string | null>) {
-        state.error = action.payload;
-      },
+      state.error = action.payload;
+    },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    clearError(state){
+        state.error = null;
+    }
   },
 });
 
-export const { setFormValues, setLoading, setError } = registrationSlice.actions;
+export const { setFormValues, setLoading, setError,clearError } =
+  registrationSlice.actions;
 export default registrationSlice.reducer;
-

@@ -67,7 +67,7 @@
 
 .registration-form{
   display: grid;
-  grid-gap: 30px;
+  grid-gap: 15px;
   color: #584977;
 }
 
@@ -87,4 +87,9 @@
 
 .footer-content{
   padding-right: 5px;
+}
+
+.error{
+  color: red;
+  margin: 0px;
 }
