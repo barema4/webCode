@@ -48,9 +48,8 @@
 
 .login-form {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
   color: #584977;
-  grid-gap: 40px;
+  grid-gap: 15px
 }
 
 .nav-headers {

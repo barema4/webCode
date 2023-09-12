@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage } from "@hookform/error-message";
 interface RegistrationFormProps {
@@ -27,7 +27,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onClose}) => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors,isDirty, isValid },
   } = useForm<FormValues>({
     criteriaMode: "all",
   });
@@ -236,7 +236,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({onClose}) => {
           ))
         }
       />
-      <button type="submit" className="Fields">
+      <button type="submit" className="Fields" disabled={!isDirty || !isValid}>
         Register
       </button>
 
