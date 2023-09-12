@@ -25,7 +25,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm<FormData>({
     criteriaMode: "all",
   });
@@ -100,7 +100,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
           ))
         }
       />
-      <button type="submit" className="Fields">
+      <button type="submit" className="Fields" disabled={!isDirty || !isValid}>
         Login
       </button>
 
