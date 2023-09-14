@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Param,
+  Req,
   UseGuards,
   UseInterceptors,
   UploadedFiles,
@@ -27,9 +27,9 @@ export class UserController {
     return await this.userService.register(createUserDto, photos);
   }
 
-  @Get('user/:id')
+  @Get('user/me')
   @UseGuards(AuthGuard('jwt'))
-  async getUser(@Param('id') id: number) {
-    return await this.userService.getUserById(id);
+  async getUser(@Req() req) {
+    return await this.userService.getUserById(req.user.sub);
   }
 }

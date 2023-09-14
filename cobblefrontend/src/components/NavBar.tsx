@@ -1,42 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Modal from "./Modal";
-import "../Modal.css";
+import "../assets/Modal.css";
 
-const Navbar: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeRoute, setActiveRoute] = useState("register");
+interface NavigationProps {
+  isLoggedIn: boolean;
+  onLogout: () => void;
+}
 
+const Navbar: React.FC<NavigationProps> = ({ isLoggedIn, onLogout }) => {
   const navigate = useNavigate();
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleTabClick = (route: string) => {
-    setActiveRoute(route);
-    navigate(`/${route}`);
+  const handleTabClick = () => {
+    navigate("/login");
   };
 
   return (
     <div className="navbar">
       <div>WELCOME TO COBBLEWEB</div>
-
-      <div
-        className="button"
-        onClick={() => {
-          openModal();
-          handleTabClick("register");
-        }}
-      >
-        Sign Up
-      </div>
-
-      {isModalOpen && <Modal onClose={closeModal} />}
+      {isLoggedIn ? (
+        <div className="button" onClick={onLogout}>
+          Logout
+        </div>
+      ) : (
+        <div className="button" onClick={handleTabClick}>
+          Login
+        </div>
+      )}
     </div>
   );
 };

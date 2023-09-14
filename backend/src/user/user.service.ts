@@ -9,7 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Client } from '../client/entities/client.entity';
-import { v4 as uuidv4 } from 'uuid';
 import * as AWS from 'aws-sdk';
 import * as bcrypt from 'bcrypt';
 import { Photo } from '../photo/entities/photo.entity';
@@ -108,8 +107,11 @@ export class UserService {
         'https://avatars.dicebear.com/api/adventurer-neutral/mail%40ashallendesign.co.uk.svg';
 
       const uploadedImageURLs = await Promise.all(
-        images.map(async (image) => {
-          const imageName = `image_${uuidv4()}.jpg`;
+        images.map(async (image: any) => {
+          const imageExtension = image.originalname.split('.').pop();
+          const imagePath = `images/cobbleweb/${new Date().toISOString()}-${
+            image.originalname
+          }`;
           const s3 = new AWS.S3({
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -117,31 +119,30 @@ export class UserService {
 
           const uploadParams = {
             Bucket: process.env.AWS_S3_BUCKET,
-            Key: imageName,
+            Key: imagePath,
             Body: image.buffer,
+            ContentType: `image/${imageExtension}`,
             ACL: 'public-read',
           };
-
           const result = await s3.upload(uploadParams).promise();
           return result.Location;
         }),
       );
+
       const savedUser = await this.userRepository.save(user);
+      const photoIds = [];
+      for (const imgUrl of uploadedImageURLs) {
+        const photo = this.photoRepository.create();
+        photo.url = imgUrl;
+        photo.user = user;
+        const seg = imgUrl.split('/');
+        const name = decodeURIComponent(seg[seg.length - 1]);
+        photo.name = name;
+        const res = await this.photoRepository.save(photo);
+        photoIds.push(res.id);
+      }
 
-      const photo = new Photo();
-      photo.name = uuidv4();
-      photo.user = user;
-
-      const mapedImagedPromises: Promise<number>[] = uploadedImageURLs.map(
-        async (uploadedImageURL) => {
-          photo.url = uploadedImageURL;
-          const photoResponse = await this.photoRepository.save(photo);
-          return photoResponse.id;
-        },
-      );
-
-      const mapedImaged = await Promise.all(mapedImagedPromises);
-      client.photos = mapedImaged;
+      client.photos = photoIds;
 
       await this.clientRepository.save(client);
 
@@ -177,6 +178,7 @@ export class UserService {
         'active',
         'createdAt',
       ],
+      relations: ['clients', 'photos'],
     };
     const user = await this.userRepository.findOne(options);
 

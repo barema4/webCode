@@ -1,6 +1,6 @@
 ### What does this project do?
 
-* it contains the frontend application consumimg the backend api that was developed before
+* it contains the both frontend and backend applications
 
 
 ### How can one run this project
@@ -11,7 +11,8 @@
 * Run the server by *yarn start*
 
 
-### How to run the backend API
+### To run the backend API
 * Cd backend
 * Install dependencies via *yarn*
 * Run the server *yarn run start:dev*
+* Test the application

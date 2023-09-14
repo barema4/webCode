@@ -17,19 +17,15 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     if (!isEmail(email)) {
-      throw new BadRequestException('Please enter a valid email');
+      throw new BadRequestException('Invalid crendentials');
     }
 
     if (password.length < 6 || password.length > 50) {
-      throw new BadRequestException(
-        'Password length must be between 6 and 50 characters.',
-      );
+      throw new BadRequestException('Invalid crendentials.');
     }
 
     if (!/\d/.test(password)) {
-      throw new BadRequestException(
-        'Password must contain at least one number',
-      );
+      throw new BadRequestException('Invalid crendentials');
     }
     const user = await this.userService.findByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {

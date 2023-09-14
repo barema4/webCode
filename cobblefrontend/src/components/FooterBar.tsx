@@ -1,5 +1,5 @@
 import React from "react";
-import "../Modal.css";
+import "../assets/Modal.css";
 
 export default function FooterBar() {
   return (
