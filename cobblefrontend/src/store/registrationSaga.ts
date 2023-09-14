@@ -4,6 +4,7 @@ import {
   setLoading,
   setError,
   clearError,
+  setRegistrationSuccess,
 } from "./registrationSlice";
 import { register } from "../utils/api";
 
@@ -25,6 +26,7 @@ function* handleRegistration(action: {
     yield put(setLoading(true));
     const response = yield call(register, action.payload);
     yield put(setFormValues(response.data));
+    yield put(setRegistrationSuccess(response.status));
   } catch (error: any) {
     yield put(setError(error.response.data.message || "An error occurred"));
   } finally {

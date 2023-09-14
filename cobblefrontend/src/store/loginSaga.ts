@@ -1,5 +1,11 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { setLoginStatus, setLoading, setError, clearError } from "./loginSlice";
+import {
+  setLoginStatus,
+  setLoading,
+  setError,
+  clearError,
+  logoutSuccess,
+} from "./loginSlice";
 import { login } from "../utils/api";
 
 interface FormValues {
@@ -15,7 +21,7 @@ function* handleLogin(action: { type: string; payload: FormValues }): unknown {
     localStorage.setItem("token", response.data.access_token);
     yield put(setLoginStatus(response.status));
   } catch (error: any) {
-    yield put(setError(error.response.data.message || "An error occurred"));
+    yield put(setError(error.response.data.message));
   } finally {
     yield put(setLoading(false));
   }
@@ -24,5 +30,13 @@ function* handleLogin(action: { type: string; payload: FormValues }): unknown {
 function* watchLogin() {
   yield takeLatest("LOGIN_REQUEST", handleLogin);
 }
-
 export default watchLogin;
+
+function* handleLogout() {
+  yield put(logoutSuccess());
+  localStorage.removeItem("token");
+}
+
+export function* watchLogout() {
+  yield takeLatest("LOGOUT_REQUEST", handleLogout);
+}

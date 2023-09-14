@@ -13,6 +13,7 @@ interface RegistrationState {
   formValues: FormValues;
   loading: boolean;
   error: string | null;
+  registrationStatus: number;
 }
 
 const initialState: RegistrationState = {
@@ -26,6 +27,7 @@ const initialState: RegistrationState = {
   },
   loading: false,
   error: null,
+  registrationStatus: 0,
 };
 
 const registrationSlice = createSlice({
@@ -34,6 +36,9 @@ const registrationSlice = createSlice({
   reducers: {
     setFormValues(state, action: PayloadAction<FormValues>) {
       state.formValues = action.payload;
+    },
+    setRegistrationSuccess(state, action: PayloadAction<number>) {
+      state.registrationStatus = action.payload;
     },
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload;
@@ -47,6 +52,11 @@ const registrationSlice = createSlice({
   },
 });
 
-export const { setFormValues, setLoading, setError, clearError } =
-  registrationSlice.actions;
+export const {
+  setFormValues,
+  setLoading,
+  setError,
+  setRegistrationSuccess,
+  clearError,
+} = registrationSlice.actions;
 export default registrationSlice.reducer;

@@ -13,7 +13,7 @@ export type UserType = {
   export type IUserState = {
     data: UserType | null;
     isLoading: boolean;
-    errors: string;
+    errors: {};
   }
 
   export type UsersStateType = {
