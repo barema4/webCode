@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import{resetProfileState} from '../src/store/userSlice'
 import Navbar from "./components/NavBar";
 import FooterBar from "./components/FooterBar";
 import { Routes, Route } from "react-router-dom";
@@ -14,13 +15,19 @@ const App: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handleProfileClick = () => {
+    dispatch(resetProfileState());
+  };
+
   const onLogout = () => {
+    handleProfileClick()
     dispatch({ type: "LOGOUT_REQUEST" });
     navigate("/");
   };
 
   return (
     <div className="App">
+
       <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
       <div className="middle-part">
         <Routes>

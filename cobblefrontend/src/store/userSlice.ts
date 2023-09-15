@@ -31,6 +31,9 @@ export const usersSlice = createSlice({
       state.user.isLoading = false;
       state.user.errors = error;
     },
+    resetProfileState: (state) => {
+      return usersInitialState;
+    },
     clearError(state) {
       state.user.errors = "";
     },
@@ -40,6 +43,7 @@ export const usersSlice = createSlice({
 export const {
   getUserAction,
   getUserSuccessAction,
+  resetProfileState,
   getUserErrorAction,
   clearError,
 } = usersSlice.actions;

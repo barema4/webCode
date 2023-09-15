@@ -67,12 +67,12 @@ const UserProfile: React.FC = () => {
             <Slider {...settings}>
               {data.photos.map((photo: any, index: number) => {
                 return (
-                  <div key={photo.id}>
+                  <div key={photo.id} className="single-photo">
                     <img
                       src={photo.url}
                       alt="avatar"
-                      width="600"
-                      height="500"
+                      width="400"
+                      height="400"
                     />
                   </div>
                 );

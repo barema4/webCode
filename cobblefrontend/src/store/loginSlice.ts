@@ -34,6 +34,9 @@ const loginSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    resetLoginState: (state) => {
+      return initialState;
+    },
     logoutSuccess: (state) => {
       state.isLoggedIn = false;
     },
@@ -47,6 +50,7 @@ export const {
   setLoginStatus,
   setLoading,
   setError,
+  resetLoginState,
   logoutSuccess,
   clearError,
 } = loginSlice.actions;
