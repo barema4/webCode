@@ -44,6 +44,7 @@ const UserProfile: React.FC = () => {
             data.clients.map((client: any) => {
               return (
                 <div className="client" key={client.id}>
+                  <h1>Profile Details</h1>
                   <div className="client-details">
                     <label>Full Name:</label>
                     <div className="client-name">{client.fullName}</div>
@@ -63,10 +64,12 @@ const UserProfile: React.FC = () => {
             })}
         </div>
         <div className="image-slider">
+        <h1>Profile Photos</h1>
           {data && data.photos.length > 0 && (
             <Slider {...settings}>
               {data.photos.map((photo: any, index: number) => {
                 return (
+                  <>
                   <div key={photo.id} className="single-photo">
                     <img
                       src={photo.url}
@@ -75,6 +78,8 @@ const UserProfile: React.FC = () => {
                       height="400"
                     />
                   </div>
+                  </>
+                  
                 );
               })}
             </Slider>

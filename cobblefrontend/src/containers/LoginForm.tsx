@@ -65,83 +65,94 @@ const LoginForm: React.FC = () => {
   return (
     <div className="login">
       <div className="login-bound">
-      <div className="heading">
-        <h1>Welcome back</h1>
-        <p>Please Enter Your details</p>
+        <div className="heading">
+          <h1>Welcome back</h1>
+          <p>Please Enter Your details</p>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="login-form">
+            <div className="login-fields">
+              <label className="label">Email</label>
+              <input
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+                    message: "Please enter a valid email",
+                  },
+                })}
+                type="email"
+                placeholder="Email"
+                className="Fields"
+              />
+              <div className="error-message">
+              <ErrorMessage
+              errors={errors}
+              name="email"
+              render={({ messages }) =>
+                messages &&
+                Object.entries(messages).map(([type, message]) => (
+                  <p key={type} className="error">
+                    {message}
+                  </p>
+                ))
+              }
+            />
+
+              </div>
+             
+            </div>
+
+            
+
+            <div className="login-fields">
+              <label className="label">Password</label>
+              <input
+                {...register("password", {
+                  required: "Password is required.",
+                })}
+                type="password"
+                placeholder="Password"
+                className="Fields"
+              />
+              <div className="error-message">
+              <ErrorMessage
+                  errors={errors}
+                  name="password"
+                  render={({ messages }) =>
+                    messages &&
+                    Object.entries(messages).map(([type, message]) => (
+                      <p key={type} className="field-error">
+                        {message}
+                      </p>
+                    ))
+                  }
+                />
+
+              </div>
+                
+            </div>
+
+            <button type="submit" className="btn">
+              Login
+            </button>
+            {error && <p className="error">{errorMessage}</p>}
+          </div>
+          <div className="account">
+            <div>Don't have account:</div>
+            <div>
+              <Link
+                to="/register"
+                onClick={handleLoginClick}
+                className="register-link"
+              >
+                Register
+              </Link>
+            </div>
+          </div>
+        </form>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="login-form">
-          <div className="login-fields">
-            <label className="label">Email</label>
-            <input
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
-                  message: "Please enter a valid email",
-                },
-              })}
-              type="email"
-              placeholder="Email"
-              className="Fields"
-            />
-          </div>
-
-          <ErrorMessage
-            errors={errors}
-            name="email"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
-
-          <div className="login-fields">
-            <label className="label">Password</label>
-            <input
-              {...register("password", {
-                required: "Password is required.",
-              })}
-              type="password"
-              placeholder="Password"
-              className="Fields"
-            />
-          </div>
-
-          <ErrorMessage
-            errors={errors}
-            name="password"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
-          <button type="submit" className="btn">
-            Login
-          </button>
-          {error && <p className="error">{errorMessage}</p>}
-        </div>
-        <div className="account">
-          <div>Don't have account:</div>
-          <div>
-            <Link to="/register" onClick={handleLoginClick} className="register-link">
-              Register
-            </Link>
-          </div>
-        </div>
-      </form>
     </div>
-
-      </div>
-    
   );
 };
 

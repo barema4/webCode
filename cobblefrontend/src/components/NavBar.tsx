@@ -26,7 +26,7 @@ const Navbar: React.FC<NavigationProps> = ({ isLoggedIn, onLogout }) => {
     <div className="navbar">
       <div className="nav-title">WELCOME TO COBBLEWEB</div>
       {isLoggedIn ? (
-        <div className="button" onClick={onLogout}>
+        <div className="nav-title" onClick={onLogout}>
           Logout
         </div>
       ) : (

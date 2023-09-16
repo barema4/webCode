@@ -110,20 +110,22 @@ const RegistrationForm: React.FC = () => {
               placeholder="First Name"
               className="Fields"
             />
+            <div className="error-message">
+              <ErrorMessage
+                errors={errors}
+                name="firstName"
+                render={({ messages }) =>
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type} className="error">
+                      {message}
+                    </p>
+                  ))
+                }
+              />
+            </div>
           </div>
 
-          <ErrorMessage
-            errors={errors}
-            name="firstName"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
           <div className="login-fields">
             <label className="label"> LastName</label>
             <input
@@ -147,20 +149,22 @@ const RegistrationForm: React.FC = () => {
               placeholder="Last Name"
               className="Fields"
             />
+            <div className="error-message">
+              <ErrorMessage
+                errors={errors}
+                name="lastName"
+                render={({ messages }) =>
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type} className="error">
+                      {message}
+                    </p>
+                  ))
+                }
+              />
+            </div>
           </div>
 
-          <ErrorMessage
-            errors={errors}
-            name="lastName"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
           <div className="login-fields">
             <label className="label">Email</label>
             <input
@@ -175,20 +179,22 @@ const RegistrationForm: React.FC = () => {
               placeholder="Email"
               className="Fields"
             />
+            <div className="error-message">
+              <ErrorMessage
+                errors={errors}
+                name="email"
+                render={({ messages }) =>
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type} className="error">
+                      {message}
+                    </p>
+                  ))
+                }
+              />
+            </div>
           </div>
 
-          <ErrorMessage
-            errors={errors}
-            name="email"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
           <div className="login-fields">
             <label className="label">Photos</label>
             <input
@@ -212,100 +218,109 @@ const RegistrationForm: React.FC = () => {
               multiple
               className="Fields"
             />
+            <div className="error-message">
+              <ErrorMessage
+                errors={errors}
+                name="photos"
+                render={({ messages }) =>
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type} className="error">
+                      {message}
+                    </p>
+                  ))
+                }
+              />
+            </div>
           </div>
 
-          <ErrorMessage
-            errors={errors}
-            name="photos"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
           <div className="login-fields">
             <label className="label">Role</label>
             <input
-            {...register("role", {
-              required: "Role is required.",
-              pattern: {
-                value: /^[a-zA-Z\s]*$/,
-                message: "Role must contain only characters",
-              },
-              minLength: {
-                value: 2,
-                message: "Role length must not be less than 2 characters.",
-              },
-              maxLength: {
-                value: 25,
-                message: "Role length must not be greater than 25 characters.",
-              },
-            })}
-            placeholder="Role"
-            className="Fields"
-          />
-
+              {...register("role", {
+                required: "Role is required.",
+                pattern: {
+                  value: /^[a-zA-Z\s]*$/,
+                  message: "Role must contain only characters",
+                },
+                minLength: {
+                  value: 2,
+                  message: "Role length must not be less than 2 characters.",
+                },
+                maxLength: {
+                  value: 25,
+                  message:
+                    "Role length must not be greater than 25 characters.",
+                },
+              })}
+              placeholder="Role"
+              className="Fields"
+            />
+            <div className="error-message">
+              <ErrorMessage
+                errors={errors}
+                name="role"
+                render={({ messages }) =>
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type} className="error">
+                      {message}
+                    </p>
+                  ))
+                }
+              />
+            </div>
           </div>
-          
-          <ErrorMessage
-            errors={errors}
-            name="role"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
+
           <div className="login-fields">
             <label className="label">Password</label>
             <input
-            {...register("password", {
-              required: "Password is required.",
-              minLength: {
-                value: 6,
-                message: "Password length must not be less than 6 characters.",
-              },
-              maxLength: {
-                value: 50,
-                message:
-                  "Password length must not be greater than 50 characters.",
-              },
-              pattern: {
-                value: /^(?=.*[0-9])/,
-                message: "Password must contain atleast anumber",
-              },
-            })}
-            type="password"
-            placeholder="Password"
-            className="Fields"
-          />
+              {...register("password", {
+                required: "Password is required.",
+                minLength: {
+                  value: 6,
+                  message:
+                    "Password length must not be less than 6 characters.",
+                },
+                maxLength: {
+                  value: 50,
+                  message:
+                    "Password length must not be greater than 50 characters.",
+                },
+                pattern: {
+                  value: /^(?=.*[0-9])/,
+                  message: "Password must contain atleast anumber",
+                },
+              })}
+              type="password"
+              placeholder="Password"
+              className="Fields"
+            />
+            <div className="error-message">
+              <ErrorMessage
+                errors={errors}
+                name="password"
+                render={({ messages }) =>
+                  messages &&
+                  Object.entries(messages).map(([type, message]) => (
+                    <p key={type} className="error">
+                      {message}
+                    </p>
+                  ))
+                }
+              />
+            </div>
           </div>
-          
-          <ErrorMessage
-            errors={errors}
-            name="password"
-            render={({ messages }) =>
-              messages &&
-              Object.entries(messages).map(([type, message]) => (
-                <p key={type} className="error">
-                  {message}
-                </p>
-              ))
-            }
-          />
+
           <button type="submit" className="btn">
             Register
           </button>
           <div className="account">
             <div>Already Have Account:</div>
             <div>
-              <Link to="/login" className="register-link">Login</Link>
+              <Link to="/login" className="register-link">
+                Login
+              </Link>
             </div>
           </div>
           {registrationStatus && <p className="success">{successMessage}</p>}
