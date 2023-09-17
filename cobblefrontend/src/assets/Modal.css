@@ -325,6 +325,14 @@ p {
   100% { transform: rotate(360deg); }
 }
 
+.success-page{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 180px;
+}
+
 @media (min-width: 900px) and (max-width: 1024px) {
   .image-tab {
     height: 80vh;

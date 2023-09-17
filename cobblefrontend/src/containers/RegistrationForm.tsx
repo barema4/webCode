@@ -62,7 +62,7 @@ const RegistrationForm: React.FC = () => {
   useEffect(() => {
     if (registrationStatus === 201) {
       enqueueSnackbar("Registration  successful!", { variant: "success" });
-      navigate("/login");
+      navigate("/success");
     }
   }, [registrationStatus, navigate, enqueueSnackbar]);
 

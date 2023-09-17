@@ -9,6 +9,8 @@ import UserProfile from "./containers/UserProfile";
 import RegistrationForm from "./containers/RegistrationForm";
 import LoginForm from "./containers/LoginForm";
 import Home from "./components/Home";
+import { SuccessPage } from "./components/SuccessPage";
+import NotFound from "./components/NotFound";
 
 const App: React.FC = () => {
   const { isLoggedIn } = useSelector((state: any) => state.login);
@@ -33,8 +35,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/success" element={<SuccessPage/>}/>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <FooterBar />
