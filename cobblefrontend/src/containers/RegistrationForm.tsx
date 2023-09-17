@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage } from "@hookform/error-message";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 interface FormValues {
   firstName: string;
@@ -16,10 +17,10 @@ interface FormValues {
 
 interface RegistrationState {
   formValues: FormValues;
-  loading: boolean;
   register: {
     error: string;
     registrationStatus: number;
+    loading: boolean;
   };
 }
 
@@ -34,11 +35,12 @@ const RegistrationForm: React.FC = () => {
   });
 
   const [registerError, setRegisterError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const { error, registrationStatus } = useSelector(
+  const { error, registrationStatus, loading } = useSelector(
     (state: RegistrationState) => state.register
   );
 
@@ -50,15 +52,19 @@ const RegistrationForm: React.FC = () => {
   };
 
   useEffect(() => {
+    setIsLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
     displayErrorMessage(error);
   }, [error]);
 
   useEffect(() => {
     if (registrationStatus === 201) {
-      setSuccessMessage("Registration Successful");
+      enqueueSnackbar("Registration  successful!", { variant: "success" });
       navigate("/login");
     }
-  }, [registrationStatus, navigate]);
+  }, [registrationStatus, navigate, enqueueSnackbar]);
 
   const dispatch = useDispatch();
 
@@ -311,10 +317,10 @@ const RegistrationForm: React.FC = () => {
               />
             </div>
           </div>
-
-          <button type="submit" className="btn">
-            Register
+          <button type="submit" className="btn" disabled={isLoading}>
+            {isLoading ? <div className="spinner"></div> : " Register"}
           </button>
+
           <div className="account">
             <div>Already Have Account:</div>
             <div>
@@ -323,7 +329,6 @@ const RegistrationForm: React.FC = () => {
               </Link>
             </div>
           </div>
-          {registrationStatus && <p className="success">{successMessage}</p>}
           {error && <p className="error">{registerError}</p>}
         </form>
       </div>

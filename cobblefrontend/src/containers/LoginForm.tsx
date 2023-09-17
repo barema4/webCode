@@ -3,8 +3,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { ErrorMessage } from "@hookform/error-message";
 import { Link, useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import { resetRegistrationState } from "../store/registrationSlice";
 import "../assets/Modal.css";
+
 
 interface FormData {
   email: string;
@@ -12,16 +14,16 @@ interface FormData {
 }
 
 interface responseState {
-  status: {};
-  loading: boolean;
   login: {
     error: string;
     status: number;
+    loading: boolean;
   };
 }
 
 const LoginForm: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     handleSubmit,
@@ -34,8 +36,11 @@ const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const { error, status } = useSelector((state: responseState) => state.login);
+  const { error, status, loading } = useSelector(
+    (state: responseState) => state.login
+  );
 
   const displayErrorMessage = (message: string) => {
     setErrorMessage(message);
@@ -49,14 +54,19 @@ const LoginForm: React.FC = () => {
   };
 
   useEffect(() => {
+    setIsLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
     displayErrorMessage(error);
   }, [error]);
 
   useEffect(() => {
     if (status === 201) {
+      enqueueSnackbar("Login successful!", { variant: "success" });
       navigate("/user-profile");
     }
-  }, [navigate, status]);
+  }, [navigate, status, enqueueSnackbar]);
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     dispatch({ type: "LOGIN_REQUEST", payload: data });
@@ -86,24 +96,20 @@ const LoginForm: React.FC = () => {
                 className="Fields"
               />
               <div className="error-message">
-              <ErrorMessage
-              errors={errors}
-              name="email"
-              render={({ messages }) =>
-                messages &&
-                Object.entries(messages).map(([type, message]) => (
-                  <p key={type} className="error">
-                    {message}
-                  </p>
-                ))
-              }
-            />
-
+                <ErrorMessage
+                  errors={errors}
+                  name="email"
+                  render={({ messages }) =>
+                    messages &&
+                    Object.entries(messages).map(([type, message]) => (
+                      <p key={type} className="error">
+                        {message}
+                      </p>
+                    ))
+                  }
+                />
               </div>
-             
             </div>
-
-            
 
             <div className="login-fields">
               <label className="label">Password</label>
@@ -116,7 +122,7 @@ const LoginForm: React.FC = () => {
                 className="Fields"
               />
               <div className="error-message">
-              <ErrorMessage
+                <ErrorMessage
                   errors={errors}
                   name="password"
                   render={({ messages }) =>
@@ -128,13 +134,11 @@ const LoginForm: React.FC = () => {
                     ))
                   }
                 />
-
               </div>
-                
             </div>
 
-            <button type="submit" className="btn">
-              Login
+            <button type="submit" className="btn" disabled={isLoading}>
+              {isLoading ? <div className="spinner"></div> : "Login"}
             </button>
             {error && <p className="error">{errorMessage}</p>}
           </div>

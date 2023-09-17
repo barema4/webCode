@@ -64,12 +64,12 @@ const UserProfile: React.FC = () => {
             })}
         </div>
         <div className="image-slider">
-        <h1>Profile Photos</h1>
           {data && data.photos.length > 0 && (
             <Slider {...settings}>
               {data.photos.map((photo: any, index: number) => {
                 return (
                   <>
+                  <h1>Profile Photos</h1>
                   <div key={photo.id} className="single-photo">
                     <img
                       src={photo.url}
