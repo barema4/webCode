@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {resetLoginState} from '../store/loginSlice'
 import "../assets/Modal.css";
 
 interface NavigationProps {
@@ -10,19 +12,25 @@ interface NavigationProps {
 const Navbar: React.FC<NavigationProps> = ({ isLoggedIn, onLogout }) => {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+  const handleLoginClick = () => {
+    dispatch(resetLoginState());
+  };
   const handleTabClick = () => {
+    handleLoginClick()
     navigate("/login");
   };
 
   return (
     <div className="navbar">
-      <div>WELCOME TO COBBLEWEB</div>
+      <div className="nav-title">WELCOME TO COBBLEWEB</div>
       {isLoggedIn ? (
-        <div className="button" onClick={onLogout}>
+        <div className="nav-title" onClick={onLogout}>
           Logout
         </div>
       ) : (
-        <div className="button" onClick={handleTabClick}>
+        <div className="nav-title" onClick={handleTabClick}>
           Login
         </div>
       )}
